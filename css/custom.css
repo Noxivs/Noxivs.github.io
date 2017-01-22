@@ -7,7 +7,6 @@
   width: 100vw;
   background-color: #ffffff;
 
-  -webkit-app-region: no-drag; /* to remove */
 }
 
 .wnd_container.border {
@@ -68,8 +67,6 @@
   width: 200px;
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(150, 167, 2, 0.5);
-
-  -webkit-app-region: no-drag; /* to remove */
 }
 
 .foreground .login_form_container .login_form .logo_container {
