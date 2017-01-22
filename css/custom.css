@@ -1,0 +1,81 @@
+/*
+ * Window style
+ */
+.wnd_container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+
+  -webkit-app-region: no-drag; /* to remove */
+}
+
+.wnd_container.border {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.wnd_container.border.default {
+  border-top: 4px solid #96a703;
+}
+
+.wnd_header {
+  width: 100vw;
+}
+
+.wnd_inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*
+ * Login screen
+ */
+
+.wnd_inner .background,
+.wnd_inner .foreground {
+  width: 100%;
+  height: 100%;
+}
+
+.wnd_inner .background {
+  position: absolute;
+}
+
+.wnd_inner .foreground {
+  position: relative;
+}
+
+/*.background .segmenter {
+  background-image: url('../img/background.png');
+}
+*/
+
+.foreground .login_form_container {
+  position: relative;
+  height: 100%;
+  width: 100%
+}
+
+.foreground .login_form_container .login_form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 300px;
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(150, 167, 2, 0.5);
+
+  -webkit-app-region: no-drag; /* to remove */
+}
+
+.foreground .login_form_container .login_form .logo_container {
+  text-align: center;
+  transform: translateY(-50%);
+}
+.foreground .login_form_container .login_form .logo_container img {
+  width: 192px;
+}
