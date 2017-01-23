@@ -13,6 +13,7 @@
           left: 0;
           width: 100vw;
           height: 100vh;
+          z-index: 1;
         }
 
         body {
@@ -26,7 +27,6 @@
         <canvas id="compass"></canvas>
       </div>
       <script src="jquery-3.1.1.min.js"></script>
-      <script src="jQueryRotate.js"></script>
       <script>
         const TO_RADIANS = Math.PI/180;
         window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -87,8 +87,8 @@
 
 
         $( window ).scroll(function() {
-          rotate += 5;
-          $('html, body').animate({scrollTop: '+=150px'}, 0);
+          rotate += 10;
+          $('html, body').animate({scrollTop: '0px'}, 0);
         });
       </script>
     </body>
