@@ -7,26 +7,41 @@
           display: none;
         }
 
-        .left_panel {
-          position: fixed;
+        *, body, div {
+          margin: 0;
+          padding: 0;
+        }
+
+        .global_container {
           top: 0;
           left: 0;
-          width: 50vw;
+          width: 100vw;
           height: 100vh;
+          min-width: 1280px;
+          min-height: 720px;
+          position: relative;
+          display: table;
+        }
+
+        .panel {
+            display: table-cell;
+        }
+
+        .left_panel {
+          position: relative;
+          width: 40%;
+          height: 100%;
           z-index: 1;
           background-color: white;
           border-right: #b0af9a 1px solid;
-          overflow: hidden;
         }
 
         .right_panel {
-          position: fixed;
-          top: 0;
-          left: 50vw;
-          width: 50vw;
-          height: 100vh;
+          position: relative;
+          width: 60%;
+          height: 100%;
           overflow: scroll;
-          z-index: 1;
+          background-color: #ECEFF1;
         }
 
         .content {
@@ -38,8 +53,20 @@
 
         /* compass */
 
+        #compass_container {
+          position: relative;
+          height: 100%;
+          width: 100%;
+          z-index: -1;
+        }
+
         #compass {
-          transform: scale(0.75);
+          position: absolute;
+          transform: translateX(-50%) translateY(-50%);
+          -webkit-transform: translateX(-50%) translateY(-50%);
+          -moz-transform: translateX(-50%) translateY(-50%);
+          top: 50%;
+          left: 50%;
         }
 
         #background {
@@ -49,11 +76,17 @@
         /* Xusni */
 
         #xusni {
-        	 color: #212956;
+        	 color: #455A64;
            position: absolute;
          	 overflow: hidden;
          	-webkit-flex-direction: row-reverse;
          	flex-direction: row-reverse;
+
+          transform: translateY(-50%);
+          -webkit-transform: translateY(-50%);
+          -moz-transform: translateY(-50%);
+          top: 50%;
+          left: 100%;
         }
 
         .nav {
@@ -73,6 +106,7 @@
         	border: 0;
         	background: none;
         	-webkit-tap-highlight-color: rgba(0,0,0,0);
+          cursor: pointer;
         }
 
         .nav__item:focus {
@@ -92,7 +126,7 @@
         	left: 0;
         	width: 100%;
         	height: 30%;
-        	background: #3c4a9a;
+        	background: #546E7A;
         	-webkit-transform-origin: 0 0;
         	transform-origin: 0 0;
         	-webkit-transition: -webkit-transform 0.5s, background-color 0.5s;
@@ -103,13 +137,13 @@
 
         .nav--xusni .nav__item:not(.nav__item--current):hover::after,
         .nav--xusni .nav__item:not(.nav__item--current):focus::after {
-        	background: #212956;
+        	background: #455A64;
         	-webkit-transition: background-color 0.3s;
         	transition: background-color 0.3s;
         }
 
         .nav--xusni .nav__item--current::after {
-        	background: #212956;
+        	background: #455A64;
         	-webkit-transform: scale3d(0.2,1,1);
         	transform: scale3d(0.2,1,1);
         }
@@ -138,20 +172,24 @@
       </style>
     </head>
     <body>
-      <div class="left_panel">
-        <div id="xusni">
-          <nav class="nav nav--xusni">
-          </nav>
+      <div class="global_container">
+        <div class="panel left_panel">
+          <div id="xusni">
+            <nav class="nav nav--xusni">
+            </nav>
+          </div>
+          <div id="compass_container">
+            <div id="compass">
+              <img id="background" src="compass.png"></img>
+              <img id="canvas_src" src="background.png" class="mask" data-mask="skate.png">
+              <canvas id="canvas"></canvas>
+            </div>
+          </div>
         </div>
-        <div id="compass">
-          <img id="background" src="compass.svg"></img>
-          <img id="canvas_src" src="background.jpg" class="mask" data-mask="skate.png">
-          <canvas id="canvas"></canvas>
-        </div>
-      </div>
-      <div class="right_panel">
-        <div class="content">
+        <div class="panel right_panel">
+          <div class="content">
 
+          </div>
         </div>
       </div>
       <script src="jquery-3.1.1.min.js"></script>
@@ -172,7 +210,7 @@
           let mask = null;
 
           let current_rotate = 0;
-          let rotate = -45; /*to change */
+          let rotate = 0; /*to change */
 
           background = document.createElement('img');
           background.src = imageSource.src;
@@ -230,7 +268,7 @@
                     $('.nav__item--current').removeClass('nav__item--current');
 
                     $(this).addClass('nav__item--current');
-                    rotate = ($(this).attr('content-id') - 2) * 45;
+                    rotate = ($(this).attr('content-id') - 1) * 45;
                   });
 
                   $('#xusni .nav--xusni').append(button);
