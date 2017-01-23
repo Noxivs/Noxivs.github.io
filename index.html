@@ -160,6 +160,7 @@
           let background = null;
           let mask = null;
 
+          let current_rotate = 0;
           let rotate = -45; /*to change */
 
           background = document.createElement('img');
@@ -189,7 +190,7 @@
                   imageContext.save();
 
                   imageContext.translate(width/2, height/2);
-                  imageContext.rotate(rotate * TO_RADIANS);
+                  imageContext.rotate(current_rotate * TO_RADIANS);
                   imageContext.drawImage(mask, -(mask.width/2),  -(mask.height/2), mask.width, mask.height);
 
                   imageContext.restore();
@@ -197,6 +198,12 @@
                   imageContext.globalCompositeOperation = 'source-atop';
 
                   imageContext.drawImage(background, 0,0, width, height);
+
+                  if(current_rotate > rotate) {
+                    current_rotate -= 1;
+                  } else if (current_rotate < rotate) {
+                    current_rotate += 1;
+                  }
                 }
 
                 requestAnimationFrame(drawCanvas);
