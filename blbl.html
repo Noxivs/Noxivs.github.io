@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link href='http://fonts.googleapis.com/css?family=Roboto:400,100' rel='stylesheet' type='text/css'>
+      <style>
+        .mask {
+          display: none;
+        }
+
+        *, body, div {
+          margin: 0;
+          padding: 0;
+        }
+
+        .global_container {
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          min-width: 1280px;
+          min-height: 720px;
+          position: relative;
+          display: table;
+        }
+
+        .panel {
+            display: table-cell;
+        }
+
+        .left_panel {
+          position: relative;
+          width: 40%;
+          height: 100%;
+          z-index: 1;
+          background-color: white;
+          border-right: #497169 1px solid;
+        }
+
+        .right_panel {
+          position: relative;
+          width: 60%;
+          height: 100%;
+          overflow: scroll;
+          background-color: white;
+        }
+
+        .content {
+          margin: 10px;
+          font-family: 'Roboto';
+          text-align: justify;
+          text-justify: inter-word;
+        }
+
+        /* compass */
+
+        #compass_container {
+          position: relative;
+          height: 100%;
+          width: 100%;
+          z-index: -1;
+        }
+
+        #compass {
+          position: absolute;
+          transform: translateX(-50%) translateY(-50%);
+          -webkit-transform: translateX(-50%) translateY(-50%);
+          -moz-transform: translateX(-50%) translateY(-50%);
+          top: 50%;
+          left: 50%;
+        }
+
+        #background {
+          position: absolute;
+        }
+
+        /* Xusni */
+
+        #xusni {
+        	 color: #497169;
+           position: absolute;
+         	 overflow: hidden;
+         	-webkit-flex-direction: row-reverse;
+         	flex-direction: row-reverse;
+
+          transform: translateY(-50%);
+          -webkit-transform: translateY(-50%);
+          -moz-transform: translateY(-50%);
+          top: 50%;
+          left: 100%;
+        }
+
+        .nav {
+        	position: relative;
+        	width: 8em;
+         /*	margin: 0 0 0 3em; */
+        }
+
+        .nav__item {
+        	line-height: 1;
+        	position: relative;
+        	display: block;
+        	margin: 0;
+        	padding: 0;
+        	letter-spacing: 0;
+        	color: currentColor;
+        	border: 0;
+        	background: none;
+        	-webkit-tap-highlight-color: rgba(0,0,0,0);
+          cursor: pointer;
+        }
+
+        .nav__item:focus {
+        	outline: none;
+        }
+
+        .nav--xusni .nav__item {
+        	width: 3em;
+        	height: 1.25em;
+        	margin: 0.5em 0;
+        }
+
+        .nav--xusni .nav__item::after {
+        	content: '';
+        	position: absolute;
+        	top: 35%;
+        	left: 0;
+        	width: 100%;
+        	height: 30%;
+        	background: #497169;
+        	-webkit-transform-origin: 0 0;
+        	transform-origin: 0 0;
+        	-webkit-transition: -webkit-transform 0.5s, background-color 0.5s;
+        	transition: transform 0.5s, background-color 0.5s;
+        	-webkit-transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+        	transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+        }
+
+        .nav--xusni .nav__item:not(.nav__item--current):hover::after,
+        .nav--xusni .nav__item:not(.nav__item--current):focus::after {
+        	background: #497169;
+        	-webkit-transition: background-color 0.3s;
+        	transition: background-color 0.3s;
+        }
+
+        .nav--xusni .nav__item--current::after {
+        	background: #497169;
+        	-webkit-transform: scale3d(0.2,1,1);
+        	transform: scale3d(0.2,1,1);
+        }
+
+        .nav--xusni .nav__item-title {
+        	margin: 0 0 0 1em;
+        	opacity: 0;
+        	display: block;
+        	-webkit-transform: translate3d(2em,0,0);
+        	transform: translate3d(2em,0,0);
+        	-webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+        	transition: opacity 0.5s, transform 0.5s;
+        	-webkit-transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+        	transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+          white-space: nowrap;
+          font-family: helvetica;
+          text-transform: uppercase;
+        }
+
+        .nav--xusni .nav__item--current .nav__item-title {
+        	-webkit-transition-delay: 0.1s;
+        	transition-delay: 0.1s;
+        	opacity: 1;
+        	-webkit-transform: translate3d(0,0,0);
+        	transform: translate3d(0,0,0);
+        }
+
+      </style>
+    </head>
+    <body>
+      <div class="global_container">
+        <div class="panel left_panel">
+          <div id="xusni">
+            <nav class="nav nav--xusni">
+            </nav>
+          </div>
+          <div id="compass_container">
+            <div id="compass">
+              <img id="background" src="compass.png"></img>
+              <img id="canvas_src" src="background.png" class="mask" data-mask="skate.png">
+              <canvas id="canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="panel right_panel">
+          <div class="content">
+
+          </div>
+        </div>
+      </div>
+      <script src="jquery-3.1.1.min.js"></script>
+      <script>
+        $(document).ready(function() {
+          const TO_RADIANS = Math.PI/180;
+          window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                                window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+
+          let start = null;
+
+          let imageCanvas = document.getElementById("canvas");
+          let imageContext = imageCanvas.getContext('2d');
+          let imageSource = document.getElementById("canvas_src");
+
+          let background = null;
+          let mask = null;
+
+          let current_rotate = 0;
+          let rotate = 0; /*to change */
+
+          background = document.createElement('img');
+          background.src = imageSource.src;
+
+          background.onload = function() {
+
+              let width  = background.width;
+              let height = background.height;
+
+              imageCanvas.width = width;
+              imageCanvas.height = height
+
+              mask = document.createElement('img');
+              mask.src = imageSource.getAttribute('data-mask');
+
+              mask.onload = function() {
+
+                function drawCanvas(timestamp) {
+                  requestAnimationFrame(drawCanvas);
+
+                  imageCanvas.width = width;
+                  imageCanvas.height = height;
+
+                  imageContext.clearRect(0, 0, width, height);
+
+                  imageContext.save();
+
+                  imageContext.translate(width/2, height/2);
+                  imageContext.rotate(current_rotate * TO_RADIANS);
+                  imageContext.drawImage(mask, -(mask.width/2),  -(mask.height/2), mask.width, mask.height);
+
+                  imageContext.restore();
+
+                  imageContext.globalCompositeOperation = 'source-atop';
+
+                  imageContext.drawImage(background, 0,0, width, height);
+
+                  if(current_rotate > rotate) {
+                    current_rotate -= 1;
+                  } else if (current_rotate < rotate) {
+                    current_rotate += 1;
+                  }
+                }
+
+                requestAnimationFrame(drawCanvas);
+
+
+                for (var i = 1 ; i <= 8 ; i++) {
+                  let button =  $('<div content-id="' + i + '" class="nav__item' + (i == 1 ? " nav__item--current" : "") + '" aria-label="Item ' + i + '"><span class="nav__item-title"></span></div>');
+                  button.click(function() {
+                    if( $(this).hasClass('nav__item--current') ) {
+                      return false;
+                    }
+
+                    $('.nav__item--current').removeClass('nav__item--current');
+
+                    $(this).addClass('nav__item--current');
+                    rotate = ($(this).attr('content-id') - 1) * 45;
+                  });
+
+                  $('#xusni .nav--xusni').append(button);
+                }
+              };
+          };
+        });
+      </script>
+    </body>
+</html>
