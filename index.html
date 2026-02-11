@@ -1,15 +1,1284 @@
+
+Vecteur website · HTML
+Copier
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-	    <meta charset="UTF-8" />
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Dofus Community</title>
-        <link rel="stylesheet" type="text/css" href="css/custom.css" />
-        <link rel="stylesheet" type="text/css" href="css/normalize.css" />
-    </head>
-    <body>
-        <div id="root"></div>
-        <script src="bundle.js"></script>
-    </body>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VECTEUR — Stratégie vidéo pour le knowledge management et le financement</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0e17;
+  --paper: #f4f1eb;
+  --cream: #ede8df;
+  --warm: #d4c5a9;
+  --gold: #c9a84c;
+  --gold-light: #e8d48b;
+  --slate: #2a3142;
+  --steel: #5a6478;
+  --mist: #8b93a5;
+  --white: #ffffff;
+  --accent: #1a5c8a;
+  --accent-light: #2e8bc0;
+  --danger: #c0392b;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--gold); color: var(--ink); }
+
+/* ===== UTILITIES ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+
+/* ===== NOISE OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 0;
+  transition: all 0.5s var(--ease-out-expo);
+  background: transparent;
+}
+
+nav.scrolled {
+  background: rgba(244, 241, 235, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(10, 14, 23, 0.06);
+  padding: 0.75rem 0;
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-logo span {
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--gold);
+  transition: width 0.4s var(--ease-out-expo);
+}
+
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  padding: 0.6rem 1.5rem !important;
+  border-radius: 2px;
+  transition: all 0.3s ease !important;
+}
+
+.nav-cta::after { display: none !important; }
+.nav-cta:hover { background: var(--gold) !important; color: var(--ink) !important; }
+
+/* Mobile nav */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 28px;
+  height: 20px;
+  position: relative;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  position: absolute;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-toggle span:nth-child(3) { bottom: 0; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 80vw;
+  height: 80vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: -10%;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26, 92, 138, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 8rem 0 6rem;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s var(--ease-out-expo) 0.3s forwards;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  max-width: 900px;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1s var(--ease-out-expo) 0.5s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 560px;
+  color: var(--mist);
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s var(--ease-out-expo) 0.7s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s var(--ease-out-expo) 0.9s forwards;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2.25rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 168, 76, 0.25);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  padding: 1rem 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(244, 241, 235, 0.2);
+}
+
+.btn-secondary:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 5rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(244, 241, 235, 0.08);
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out-expo) 1.2s forwards;
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--mist);
+  line-height: 1.4;
+}
+
+/* ===== SCROLL INDICATOR ===== */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out-expo) 1.5s forwards;
+}
+
+.scroll-indicator span {
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  margin: 0 auto;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ===== SECTIONS COMMON ===== */
+section {
+  padding: 7rem 0;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+}
+
+.section-desc {
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--steel);
+  max-width: 560px;
+  margin-bottom: 3.5rem;
+}
+
+/* ===== PROBLEMS / WHY ===== */
+.problems {
+  background: var(--paper);
+  position: relative;
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.problem-card {
+  background: var(--white);
+  padding: 2.5rem;
+  border: 1px solid rgba(10, 14, 23, 0.06);
+  position: relative;
+  transition: all 0.5s var(--ease-out-expo);
+  overflow: hidden;
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--gold);
+  transition: height 0.5s var(--ease-out-expo);
+}
+
+.problem-card:hover::before { height: 100%; }
+
+.problem-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(10, 14, 23, 0.06);
+}
+
+.problem-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+}
+
+.problem-card h3 {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+
+.problem-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--steel);
+}
+
+/* ===== EXPERTISE / OFFERS ===== */
+.expertise {
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+
+.expertise::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.expertise .section-desc { color: var(--mist); }
+
+.offer-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+.offer-card {
+  background: rgba(244, 241, 235, 0.03);
+  border: 1px solid rgba(244, 241, 235, 0.08);
+  padding: 3rem 2.5rem;
+  position: relative;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.offer-card:hover {
+  background: rgba(244, 241, 235, 0.06);
+  border-color: rgba(201, 168, 76, 0.3);
+  transform: translateY(-4px);
+}
+
+.offer-number {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(201, 168, 76, 0.15);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.offer-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.offer-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.offer-card p {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--mist);
+  margin-bottom: 1.5rem;
+}
+
+.offer-features {
+  list-style: none;
+  padding: 0;
+}
+
+.offer-features li {
+  font-size: 0.85rem;
+  color: rgba(244, 241, 235, 0.65);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(244, 241, 235, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.offer-features li::before {
+  content: '→';
+  color: var(--gold);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+/* ===== PROCESS ===== */
+.process {
+  background: var(--cream);
+  position: relative;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 3rem;
+  position: relative;
+}
+
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 35px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--warm);
+  z-index: 0;
+}
+
+.process-step {
+  text-align: center;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.step-number {
+  width: 70px;
+  height: 70px;
+  background: var(--ink);
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  position: relative;
+}
+
+.step-number::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--warm);
+}
+
+.process-step h4 {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+
+.process-step p {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--steel);
+}
+
+/* ===== METRICS ===== */
+.metrics {
+  background: var(--paper);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.metric-item {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: var(--white);
+  border: 1px solid rgba(10, 14, 23, 0.04);
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+.metric-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(10, 14, 23, 0.05);
+}
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value span { color: var(--gold); }
+
+.metric-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--steel);
+  line-height: 1.4;
+}
+
+/* ===== ABOUT / DIFFERENCE ===== */
+.about {
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.about-visual {
+  aspect-ratio: 4/5;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.1) 0%, transparent 50%, rgba(26, 92, 138, 0.1) 100%);
+}
+
+.about-visual-text {
+  position: absolute;
+  bottom: 3rem;
+  left: 2.5rem;
+  right: 2.5rem;
+  color: var(--paper);
+}
+
+.about-visual-text h3 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+}
+
+.about-visual-text p {
+  font-size: 0.85rem;
+  color: var(--mist);
+  line-height: 1.7;
+}
+
+.about-content .section-title { max-width: none; }
+
+.advantage-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.advantage-list li {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(10, 14, 23, 0.06);
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.advantage-marker {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 28px;
+}
+
+.advantage-text h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.advantage-text p {
+  font-size: 0.85rem;
+  color: var(--steel);
+  line-height: 1.6;
+}
+
+/* ===== SECTORS ===== */
+.sectors {
+  background: var(--cream);
+}
+
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+.sector-tag {
+  background: var(--white);
+  padding: 1.5rem;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--slate);
+  border: 1px solid rgba(10, 14, 23, 0.04);
+  transition: all 0.4s var(--ease-out-expo);
+  cursor: default;
+}
+
+.sector-tag:hover {
+  background: var(--ink);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  background: var(--ink);
+  color: var(--paper);
+  text-align: center;
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+}
+
+.cta-section .section-title {
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+}
+
+.cta-section .section-desc {
+  color: var(--mist);
+  max-width: 500px;
+  margin: 0 auto 3rem;
+}
+
+.cta-details {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(244, 241, 235, 0.08);
+}
+
+.cta-detail {
+  text-align: center;
+}
+
+.cta-detail-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 0.4rem;
+}
+
+.cta-detail-value {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.cta-detail-value a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+}
+
+.cta-detail-value a:hover { border-color: var(--gold); }
+
+/* ===== FOOTER ===== */
+footer {
+  background: #060910;
+  color: var(--mist);
+  padding: 3rem 0;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: var(--paper);
+}
+
+.footer-logo span { color: var(--gold); }
+
+.footer-text {
+  font-size: 0.75rem;
+  color: rgba(139, 147, 165, 0.5);
+}
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--mist);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover { color: var(--gold); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s var(--ease-out-expo);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .process-steps { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+  .process-steps::before { display: none; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .about-visual { max-height: 400px; }
+}
+
+@media (max-width: 768px) {
+  section { padding: 4.5rem 0; }
+
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+
+  .hero-stats { grid-template-columns: 1fr; gap: 1.5rem; }
+
+  .problems-grid { grid-template-columns: 1fr; }
+  .offer-cards { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .sectors-grid { grid-template-columns: 1fr 1fr; }
+
+  .cta-details { flex-direction: column; gap: 1.5rem; }
+  .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 1.25rem; }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .sectors-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">VECTEUR<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#methode">Méthode</a></li>
+      <li><a href="#difference">Notre différence</a></li>
+      <li><a href="#secteurs">Secteurs</a></li>
+      <li><a href="#contact" class="nav-cta">Parlons-en</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-content">
+    <p class="hero-eyebrow">Stratégie vidéo · Angers & Grand Ouest</p>
+    <h1 class="hero-title">Votre savoir mérite<br>d'être <em>vu</em></h1>
+    <p class="hero-subtitle">Nous créons des bases de connaissances vidéo et des contenus de financement qui transforment l'expertise de votre entreprise en actif stratégique.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Réserver un audit gratuit →</a>
+      <a href="#expertise" class="btn-secondary">Découvrir nos offres</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-number">93%</div>
+        <div class="stat-label">des marketeurs considèrent la vidéo comme un bon ROI</div>
+      </div>
+      <div>
+        <div class="stat-number">+40%</div>
+        <div class="stat-label">de productivité grâce au knowledge management</div>
+      </div>
+      <div>
+        <div class="stat-number">66%</div>
+        <div class="stat-label">de leads qualifiés supplémentaires via la vidéo</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator"><span></span></div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="problems">
+  <div class="container">
+    <div class="section-label reveal">Pourquoi maintenant</div>
+    <h2 class="section-title reveal">Vos connaissances se perdent.<br>Vos projets méritent mieux.</h2>
+    <p class="section-desc reveal">Chaque départ, chaque nouveau projet complexe, chaque dossier de financement est une course contre le temps. Et si la vidéo devenait votre avantage structurel ?</p>
+    <div class="problems-grid">
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="problem-icon">🔄</div>
+        <h3>Le turnover détruit votre savoir-faire</h3>
+        <p>Quand un expert quitte l'entreprise, son savoir tacite disparaît avec lui. Les procédures écrites ne captent ni les gestes, ni les réflexes, ni la culture.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="problem-icon">⏱️</div>
+        <h3>L'onboarding prend trop de temps</h3>
+        <p>Un nouveau collaborateur met 6 à 12 mois à devenir pleinement productif. Des bases de connaissances vidéo réduisent ce délai de moitié.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-3">
+        <div class="problem-icon">📊</div>
+        <h3>Vos dossiers de financement manquent d'impact</h3>
+        <p>Les investisseurs et les institutions reçoivent des centaines de dossiers. Ceux qui intègrent une vidéo de pitch professionnelle captent l'attention et restent en mémoire.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-4">
+        <div class="problem-icon">🧩</div>
+        <h3>Vos projets multi-profils peinent à se coordonner</h3>
+        <p>Acheteurs, juristes, ingénieurs, architectes : chacun a son vocabulaire. La vidéo crée un langage commun accessible à tous les intervenants.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE / OFFERS -->
+<section class="expertise" id="expertise">
+  <div class="container">
+    <div class="section-label reveal">Nos verticales</div>
+    <h2 class="section-title reveal" style="color: var(--paper)">Deux expertises.<br>Un seul objectif : votre impact.</h2>
+    <p class="section-desc reveal">Nous ne faisons pas de vidéo « corporate ». Nous créons du contenu stratégique qui résout des problèmes concrets de transmission et de financement.</p>
+    <div class="offer-cards">
+      <div class="offer-card reveal reveal-delay-1">
+        <div class="offer-number">01</div>
+        <div class="offer-tag">Knowledge Video</div>
+        <h3>Bases de connaissances vidéo</h3>
+        <p>Structurez et transmettez le savoir-faire de votre entreprise avec des bibliothèques vidéo pédagogiques, conçues pour l'onboarding, la formation et la coordination de projets complexes.</p>
+        <ul class="offer-features">
+          <li>Audit des savoirs critiques à capturer</li>
+          <li>Architecture de la base documentaire vidéo</li>
+          <li>Capsules pédagogiques de 2 à 5 minutes</li>
+          <li>Guides de diffusion et mesure d'impact</li>
+          <li>Mises à jour trimestrielles</li>
+        </ul>
+      </div>
+      <div class="offer-card reveal reveal-delay-2">
+        <div class="offer-number">02</div>
+        <div class="offer-tag">Funding Content</div>
+        <h3>Contenus vidéo de financement</h3>
+        <p>Donnez à vos dossiers la puissance de la vidéo pour convaincre investisseurs, institutions européennes et partenaires stratégiques. Vulgarisation, storytelling, impact.</p>
+        <ul class="offer-features">
+          <li>Pitch vidéo investisseurs (90s à 3 min)</li>
+          <li>Capsules thématiques (marché, équipe, tech, impact)</li>
+          <li>Dossiers visuels pour fonds européens</li>
+          <li>Conseil en narration et direction artistique</li>
+          <li>Déclinaisons réseaux sociaux</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="methode">
+  <div class="container">
+    <div class="section-label reveal">Notre méthode</div>
+    <h2 class="section-title reveal">De l'audit à l'impact :<br>un process éprouvé</h2>
+    <p class="section-desc reveal">Chaque projet suit une méthodologie rigoureuse qui garantit un contenu aligné avec vos objectifs stratégiques, pas seulement esthétique.</p>
+    <div class="process-steps">
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-number">01</div>
+        <h4>Audit & Brief</h4>
+        <p>Immersion dans votre organisation, identification des savoirs critiques ou des messages clés, définition des KPIs de succès.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-number">02</div>
+        <h4>Architecture</h4>
+        <p>Conception de l'arborescence de contenu, scénarisation des capsules, validation du storyboard avec vos équipes.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-number">03</div>
+        <h4>Production</h4>
+        <p>Tournage professionnel sur site, captation des gestes et témoignages, montage dynamique et habillage graphique.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-4">
+        <div class="step-number">04</div>
+        <h4>Déploiement</h4>
+        <p>Livraison multi-formats, guide de diffusion, formation de vos équipes, suivi des métriques d'utilisation et d'impact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics">
+  <div class="container">
+    <div class="section-label reveal">En chiffres</div>
+    <h2 class="section-title reveal">La vidéo stratégique,<br>c'est mesurable.</h2>
+    <div class="metrics-grid">
+      <div class="metric-item reveal reveal-delay-1">
+        <div class="metric-value">÷<span>2</span></div>
+        <div class="metric-label">Temps d'onboarding<br>avec le knowledge video</div>
+      </div>
+      <div class="metric-item reveal reveal-delay-2">
+        <div class="metric-value">49<span>%</span></div>
+        <div class="metric-label">Croissance des revenus<br>plus rapide avec la vidéo</div>
+      </div>
+      <div class="metric-item reveal reveal-delay-3">
+        <div class="metric-value">80<span>%</span></div>
+        <div class="metric-label">Taux de rétention moyen<br>sur les vidéos pédagogiques</div>
+      </div>
+      <div class="metric-item reveal reveal-delay-4">
+        <div class="metric-value">10<span>x</span></div>
+        <div class="metric-label">Plus engageant<br>qu'un document écrit</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / DIFFERENCE -->
+<section class="about" id="difference">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="about-visual-text">
+          <h3>Pas une agence.<br>Un partenaire stratégique.</h3>
+          <p>Vous parlez directement à celui qui comprend votre métier et qui produit votre contenu. Zéro intermédiaire. Maximum d'impact.</p>
+        </div>
+      </div>
+      <div class="about-content reveal">
+        <div class="section-label">Notre différence</div>
+        <h2 class="section-title">Pourquoi nous<br>plutôt qu'une agence ?</h2>
+        <p class="section-desc">Les grandes agences font du corporate, du brand content, de l'événementiel. Elles sont partout et nulle part. Nous, nous résolvons deux problèmes précis.</p>
+        <ul class="advantage-list">
+          <li>
+            <span class="advantage-marker">01</span>
+            <div class="advantage-text">
+              <h4>Spécialisation de niche</h4>
+              <p>Knowledge management vidéo et contenus de financement : c'est tout ce que nous faisons, et nous le faisons mieux que quiconque.</p>
+            </div>
+          </li>
+          <li>
+            <span class="advantage-marker">02</span>
+            <div class="advantage-text">
+              <h4>Interlocuteur unique</h4>
+              <p>Du brief à la livraison, vous travaillez avec la même personne. Pas de déperdition, pas de brief déformé, pas de surprise.</p>
+            </div>
+          </li>
+          <li>
+            <span class="advantage-marker">03</span>
+            <div class="advantage-text">
+              <h4>Approche conseil intégrée</h4>
+              <p>Nous ne vendons pas des vidéos : nous concevons des architectures de contenu qui génèrent des résultats mesurables.</p>
+            </div>
+          </li>
+          <li>
+            <span class="advantage-marker">04</span>
+            <div class="advantage-text">
+              <h4>Authenticité terrain</h4>
+              <p>Là où l'IA génère du contenu synthétique, nous captons l'humain, le geste technique, l'émotion. Ce que les algorithmes ne savent pas faire.</p>
+            </div>
+          </li>
+          <li>
+            <span class="advantage-marker">05</span>
+            <div class="advantage-text">
+              <h4>Rapport qualité-prix structurel</h4>
+              <p>Charges minimales, pas de strates managériales : un investissement 40 à 60 % inférieur aux agences parisiennes, pour un impact supérieur.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTORS -->
+<section class="sectors" id="secteurs">
+  <div class="container">
+    <div class="section-label reveal">Secteurs</div>
+    <h2 class="section-title reveal">Des industries complexes.<br>Des messages clairs.</h2>
+    <p class="section-desc reveal">Nous intervenons dans des secteurs où le savoir-faire est critique et le financement exigeant.</p>
+    <div class="sectors-grid">
+      <div class="sector-tag reveal">BTP & Construction</div>
+      <div class="sector-tag reveal">Industrie & Énergie</div>
+      <div class="sector-tag reveal">Aéronautique</div>
+      <div class="sector-tag reveal">Santé & Biotech</div>
+      <div class="sector-tag reveal">Collectivités</div>
+      <div class="sector-tag reveal">Deeptech</div>
+      <div class="sector-tag reveal">Startups & Scale-ups</div>
+      <div class="sector-tag reveal">Conseil & Intégrateurs</div>
+      <div class="sector-tag reveal">Agroalimentaire</div>
+      <div class="sector-tag reveal">Éducation & Recherche</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="section-label reveal" style="justify-content: center">Prochaine étape</div>
+    <h2 class="section-title reveal" style="color: var(--paper)">Prêt à transformer votre<br>expertise en actif vidéo ?</h2>
+    <p class="section-desc reveal">Réservez un audit gratuit de 30 minutes. Nous analyserons vos besoins en knowledge management ou en contenu de financement et vous proposerons un plan d'action concret.</p>
+    <div class="reveal">
+      <a href="mailto:contact@vecteur.studio" class="btn-primary" style="margin: 0 auto; display: inline-flex">Réserver mon audit gratuit →</a>
+    </div>
+    <div class="cta-details reveal">
+      <div class="cta-detail">
+        <div class="cta-detail-label">Basés à</div>
+        <div class="cta-detail-value">Angers — Grand Ouest</div>
+      </div>
+      <div class="cta-detail">
+        <div class="cta-detail-label">Intervention</div>
+        <div class="cta-detail-value">France entière</div>
+      </div>
+      <div class="cta-detail">
+        <div class="cta-detail-label">Contact</div>
+        <div class="cta-detail-value"><a href="mailto:contact@vecteur.studio">contact@vecteur.studio</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">VECTEUR<span>.</span></div>
+      <div class="footer-text">© 2026 Vecteur Studio. Stratégie vidéo pour le knowledge management et le financement.</div>
+      <ul class="footer-links">
+        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#methode">Méthode</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Reveal on scroll
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Close mobile menu if open
+      document.querySelector('.nav-links').classList.remove('mobile-open');
+    }
+  });
+});
+</script>
+</body>
 </html>
